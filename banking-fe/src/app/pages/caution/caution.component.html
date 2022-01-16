@@ -1,0 +1,173 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16" fxLayout="column" fxLayoutAlign="center start">
+        <div [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+            class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">Cautions</h1>
+                <vex-breadcrumbs [crumbs]="['Cautions']"></vex-breadcrumbs>
+            </div>
+        </div>
+    </vex-page-layout-header>
+
+    <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'"
+        [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+        <div class="card overflow-auto -mt-16">
+            <div class="bg-app-bar px-6 h-16 border-b sticky left-0" fxLayout="row" fxLayoutAlign="start center">
+                <h2 class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r rtl:border-l" fxFlex="none"
+                    fxHide.xs>
+                    <span *ngIf="selection.isEmpty()">Cautions</span>
+                    <span *ngIf="selection.hasValue()">{{ selection.selected.length }} cautions<span
+                            *ngIf="selection.selected.length > 1">s</span>
+                        selectionnés</span>
+                </h2>
+
+
+                <div class="bg-card rounded-full border px-4" fxFlex="400px" fxFlex.lt-md="auto" fxHide.xs
+                    fxLayout="row" fxLayoutAlign="start center">
+                    <ic-icon [icIcon]="icSearch" size="20px"></ic-icon>
+                    <input [formControl]="searchCtrl" class="px-4 py-3 border-0 outline-none w-full bg-transparent"
+                        placeholder="Rechercher..." type="search" />
+                </div>
+
+                <span fxFlex></span>
+
+                <button class="ml-4" fxFlex="none" fxHide.gt-xs mat-icon-button type="button">
+                    <mat-icon [icIcon]="icSearch"></mat-icon>
+                </button>
+
+
+                <button [matMenuTriggerFor]="columnFilterMenu" class="ml-4" fxFlex="none" mat-icon-button
+                    matTooltip="Filtrer les Colonnes" type="button">
+                    <mat-icon [icIcon]="icFilterList"></mat-icon>
+                </button>
+
+                <button class="ml-4" (click)="create()" color="primary" fxFlex="none" mat-mini-fab matTooltip="Ajouter"
+                    type="button">
+                    <mat-icon [icIcon]="icAdd"></mat-icon>
+                </button>
+            </div>
+            <div *ngIf="isLoadingResults" class="w-full">
+                <div class="example-loading-shade">
+                    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+                </div>
+            </div>
+            <div #htmlData>
+                <table id="excel-table" #table @stagger [dataSource]="data" class="w-full" mat-table matSort
+                    matSortDirection="asc" matSortActive="created_at">
+                    <!-- Checkbox Column -->
+                    <ng-container matColumnDef="checkbox">
+                        <th *matHeaderCellDef mat-header-cell>
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                [checked]="selection.hasValue() && isAllSelected()"
+                                [indeterminate]="selection.hasValue() && !isAllSelected()" color="primary">
+                            </mat-checkbox>
+                        </th>
+
+                        <td *matCellDef="let row" class="w-4" mat-cell>
+                            <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                                (click)="$event.stopPropagation()" [checked]="selection.isSelected(row)"
+                                color="primary">
+                            </mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <!-- Text Columns -->
+                    <ng-container *ngFor="let column of columns; trackBy: trackByProperty">
+                        <ng-container *ngIf="column.type === 'text'" [matColumnDef]="column.property">
+                            <th *matHeaderCellDef class="uppercase" mat-header-cell mat-sort-header>
+                                {{ column.label }}
+                            </th>
+                            <td *matCellDef="let row" [ngClass]="column.cssClasses" mat-cell>
+                                <span>{{ row[column.property] }}</span>
+                            </td>
+                        </ng-container>
+                    </ng-container>
+
+                    <!-- Action Column -->
+                    <ng-container matColumnDef="actions">
+                        <th *matHeaderCellDef mat-header-cell mat-sort-header></th>
+                        <td *matCellDef="let row" class="w-10 text-secondary" mat-cell>
+                            <button (click)="selectedElement = row ;$event.stopPropagation()"
+                                [matMenuTriggerData]="{ customer: row }" [matMenuTriggerFor]="actionsMenu"
+                                mat-icon-button type="button">
+                                <mat-icon [icIcon]="icMoreHoriz"></mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: visibleColumns" @fadeInUp (click)="update(row)"
+                        class="hover:bg-hover trans-ease-out cursor-pointer" mat-row></tr>
+                </table>
+            </div>
+            <mat-paginator [length]="resultsLength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                [disabled]="disablePaginator" class="sticky left-0"></mat-paginator>
+        </div>
+    </vex-page-layout-content>
+</vex-page-layout>
+
+<mat-menu #columnFilterMenu="matMenu" xPosition="before" yPosition="below">
+    <button (click)="toggleColumnVisibility(column, $event)" *ngFor="let column of columns"
+        class="checkbox-item mat-menu-item">
+        <mat-checkbox (click)="$event.stopPropagation()" [(ngModel)]="column.visible" color="primary">
+            {{ column.label }}
+        </mat-checkbox>
+    </button>
+</mat-menu>
+
+<mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below">
+    <ng-template let-dataElement="dataElement" matMenuContent>
+        <button printSectionId="print-section" ngxPrint mat-menu-item>
+            <span>Signer Caution</span>
+        </button>
+        <button (click)="approveCaution(dataElement?.id)" ngxPrint mat-menu-item>
+            <span>Approuver</span>
+        </button>
+        <button (click)="refuseCaution(dataElement?.id)" mat-menu-item>
+            <span>Refuser</span>
+        </button>
+        <button (click)="update(dataElement)" mat-menu-item>
+            <!-- <mat-icon [icIcon]="icEdit"></mat-icon> -->
+            <span>Modifié</span>
+        </button>
+        <button (click)="delete(dataElement?.id)" mat-menu-item>
+            <!-- <mat-icon [icIcon]="icDelete"></mat-icon> -->
+            <span>Supprimer</span>
+        </button>
+    </ng-template>
+</mat-menu>
+<ngx-spinner></ngx-spinner>
+<div id="print-section" hidden>
+    <h2 style="margin-bottom: 20px;">Modèle d’engagement d’une caution personnelle et solidaire</h2>
+    <p style="margin-bottom: 20px;">(à produire au lieu et place du cautionnement provisoire)</p>
+    <div>
+        <p style="margin-bottom: 10px;">Je soussigné {{selectedElement?.signataire}} agissant en qualité de
+            {{selectedElement?.socialreason}}..</p>
+        <p style="margin-bottom: 10px;">
+            1) Certifie — Certifions que (3)……………………..……… a été agréé par le ministre chargé des finances en application
+            de l’article 113 du décret n° 2014-1039 du 13 mars 2014, portant réglementation des marchés publics, que cet
+            agrément n’a pas été révoqué et que (3) ………………………….…………………….. ……………………………………………..……….. a constitué entre les
+            mains du trésorier général de Tunisie suivant récépissé n° ……………………………………….. en date du
+            ……………….………………………….. le cautionnement fixe de cinq mille dinars (5000 dinars) prévu par l’article 113 du
+            décret susvisé et que ce cautionnement n’a pas été restitué.
+
+        </p>
+        <p style="margin-bottom: 100px;">
+            2) Déclare me- déclarons nous, porter caution personnelle et solidaire,(4) …………………………………………………………………
+            ……………………………………..……………………………………..……………………………………..……………………………………………….
+            domicilié à (5) ……………………………………..……………………………………..……………………………………..…………………………..
+            Au titre du montant du cautionnement provisoire pour participer à (6) publié(e)
+            en date du …………………………………….. par (7) ………………………………….. et relatif à …………………….…………………………..
+            Le montant du cautionnement provisoire, s’élève à dinars
+            (en toutes lettres), et à Dinars (en chiffres).
+            3) M’engage- nous nous engageons solidairement, à effectuer le versement du montant garanti susvisé et dont
+            le soumissionnaire serait débiteur au titre de (6) ,
+            et ce, à la première demande écrite de l’acheteur public sans une mise en demeure ou une quelconque démarche
+            administrative ou judiciaire préalable.
+            Le présent cautionnement est valable pour une durée de jours à compter du lendemain de la
+            date limite de réception des offres.
+
+        </p>
+        <p> Fait à …………………………………….., le ……………………………………..</p>
+    </div>
+</div>

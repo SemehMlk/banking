@@ -1,0 +1,21 @@
+stages:
+ - build
+ - package
+ - deploy
+
+build:
+  stage: build
+  image: node:latest
+  only:
+    - prod
+  script:
+    - npm install -g @angular/cli@10.1.1
+    - npm install
+    - ng build 
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 2 hours
+  cache:
+    paths:
+      - node_modules/

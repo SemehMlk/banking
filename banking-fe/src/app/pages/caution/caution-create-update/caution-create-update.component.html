@@ -1,0 +1,184 @@
+<form (ngSubmit)="save()" [formGroup]="formFournisseur" class="form">
+  <!-- <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+      <h2 class="headline m-0" fxFlex="auto">
+        Caution
+      </h2>
+  
+      <button
+        class="text-secondary"
+        mat-dialog-close
+        mat-icon-button
+        type="button"
+      >
+        <mat-icon [icIcon]="icClose"></mat-icon>
+      </button>
+    </div> -->
+
+  <mat-divider class="-mx-6 text-border"></mat-divider>
+
+  <mat-dialog-content fxLayout="column">
+    <h1>Fournisseur</h1>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>N° identifiant TUNEPS</mat-label>
+        <input cdkFocusInitial formControlName="nbrTuneps" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>N° du compte bancaire</mat-label>
+        <input cdkFocusInitial formControlName="nbrCmpt" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Dénomination du fournisseur</mat-label>
+        <input cdkFocusInitial formControlName="denomination" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Nom et prénom du demandeur</mat-label>
+        <input cdkFocusInitial formControlName="demandeur" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Dénomination du fournisseur</mat-label>
+        <input cdkFocusInitial formControlName="raison" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Gerant</mat-label>
+        <input cdkFocusInitial formControlName="gerant" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Code des structures juridiques des entreprises</mat-label>
+        <input cdkFocusInitial formControlName="code" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Telephone</mat-label>
+        <input cdkFocusInitial formControlName="telephone" matInput />
+      </mat-form-field>
+    </div>
+
+    <!-- ** -->
+    <h1>Caution</h1>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>N° du cautionnement</mat-label>
+        <input cdkFocusInitial formControlName="guaranteeNumber" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Type de la caution</mat-label>
+        <input cdkFocusInitial formControlName="guaranteeType" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>N° du cautionnement</mat-label>
+        <input cdkFocusInitial formControlName="guaranteeNumber" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Type de la caution</mat-label>
+        <input cdkFocusInitial formControlName="guaranteeType" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Pourcentage montant du marché</mat-label>
+        <input cdkFocusInitial formControlName="liabilityAmountCurrencyID" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Montant</mat-label>
+        <input cdkFocusInitial formControlName="liabilityAmountFullTxt" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Type de réception</mat-label>
+        <input cdkFocusInitial formControlName="deliveryCondition" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Numéro de reçu banque</mat-label>
+        <input cdkFocusInitial formControlName="receiptNumber" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Date reçu banque</mat-label>
+        <input cdkFocusInitial formControlName="receiptDate" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Adresse de l'agence émettrice</mat-label>
+        <input cdkFocusInitial formControlName="postalRelationAddress" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Nom et prénom du responsable de traitement de la caution</mat-label>
+        <input cdkFocusInitial formControlName="chargePersonName" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Description</mat-label>
+        <input cdkFocusInitial formControlName="description" matInput />
+      </mat-form-field>
+    </div>
+
+    
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Date debut</mat-label>
+        <input cdkFocusInitial formControlName="startDate" matInput />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Date fin</mat-label>
+        <input cdkFocusInitial formControlName="endDate" matInput />
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <mat-form-field class="mt-6 flex-auto">
+        <mat-label>Validité</mat-label>
+        <input cdkFocusInitial formControlName="validity" matInput />
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close type="button">Annuler</button>
+    <button *ngIf="true" color="primary" mat-button type="submit" [disabled]="formCaution.invalid">
+      Ajouter
+    </button>
+    <button *ngIf="false" color="primary" mat-button type="submit" [disabled]="formCaution.invalid">
+      Modifier
+    </button>
+  </mat-dialog-actions>
+</form>

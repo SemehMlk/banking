@@ -1,0 +1,85 @@
+<form (ngSubmit)="save()" [formGroup]="form" class="form">
+    <!-- <div fxLayout="row" fxLayoutAlign="start center" mat-dialog-title>
+        <h2 class="headline m-0" fxFlex="auto">
+          Caution
+        </h2>
+    
+        <button
+          class="text-secondary"
+          mat-dialog-close
+          mat-icon-button
+          type="button"
+        >
+          <mat-icon [icIcon]="icClose"></mat-icon>
+        </button>
+      </div> -->
+  
+    <mat-divider class="-mx-6 text-border"></mat-divider>
+  
+    <mat-dialog-content fxLayout="column">
+      <h1>Utilisateur</h1>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Code</mat-label>
+          <input cdkFocusInitial formControlName="masterCode" matInput />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Nom</mat-label>
+          <input cdkFocusInitial formControlName="firstName" matInput />
+        </mat-form-field>
+      </div>
+  
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Prenom</mat-label>
+          <input cdkFocusInitial formControlName="secondName" matInput />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Email</mat-label>
+          <input cdkFocusInitial formControlName="email" matInput />
+        </mat-form-field>
+      </div>
+  
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Telephone</mat-label>
+          <input cdkFocusInitial formControlName="telephone" matInput />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Mot de passe</mat-label>
+          <input cdkFocusInitial formControlName="password" matInput />
+        </mat-form-field>
+      </div>
+  
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Confirmer mot de passe</mat-label>
+          <input cdkFocusInitial formControlName="passwordConfirm" matInput />
+        </mat-form-field>
+      </div>
+
+      <div class="flex flex-col sm:flex-row">
+        <mat-form-field class="mt-6 flex-auto">
+          <mat-label>Role</mat-label>
+          <input cdkFocusInitial formControlName="role" matInput />
+        </mat-form-field>
+      </div>
+  
+    </mat-dialog-content>
+  
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close type="button">Annuler</button>
+      <button *ngIf="true" color="primary" mat-button type="submit" [disabled]="form.invalid">
+        Ajouter
+      </button>
+      <button *ngIf="false" color="primary" mat-button type="submit" [disabled]="form.invalid">
+        Modifier
+      </button>
+    </mat-dialog-actions>
+  </form>
